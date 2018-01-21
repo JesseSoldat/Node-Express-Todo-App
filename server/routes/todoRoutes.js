@@ -16,7 +16,7 @@ module.exports = app => {
       res.send(doc);
     }, e => res.status(400).send(e))
   });
-
+ 
   app.get('/todos', authenticate, (req, res) => {
     Todo.find({
       _creator: req.user._id,
