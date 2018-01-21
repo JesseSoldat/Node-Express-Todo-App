@@ -27,6 +27,11 @@ const navbarInstance = (
           Register
         </NavItem>
       </LinkContainer>
+      <LinkContainer to="/login">
+        <NavItem eventKey={4} href="#">
+          Login
+        </NavItem>
+      </LinkContainer>
     </Nav>
   </Navbar>
 );
