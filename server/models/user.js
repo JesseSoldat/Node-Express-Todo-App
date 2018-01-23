@@ -38,7 +38,7 @@ UserSchema.methods.toJSON = function() {
   let user = this;
   let userObject = user.toObject();
 
-  return pick(userObject, ["_id", "email"]);
+  return pick(userObject, ["_id", "email", "tokens"]);
 }
 
 UserSchema.methods.generateAuthToken = function() {
@@ -48,7 +48,7 @@ UserSchema.methods.generateAuthToken = function() {
     _id: user._id.toHexString(),
     access
   }, process.env.JWT_SECRET).toString();
-
+  user.tokens = [];
   user.tokens.push({access, token});
 
   return user.save().then(() => {   

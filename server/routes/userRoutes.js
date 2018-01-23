@@ -3,6 +3,7 @@ const { User } = require('../models/user');
 const { authenticate } = require('../middleware/authenticate');
 
 module.exports = app => {
+
   app.post('/users', (req, res) => {
     let body = pick(req.body, ['email', 'password']);
     let user = new User(body);
@@ -10,13 +11,22 @@ module.exports = app => {
     user.save().then(() => {
       return user.generateAuthToken();
     }).then(token => {
-      console.log('user', user);
-
       res.header('x-auth', token).send(user);
     }).catch(e => {
       console.log('error', e);
       res.status(400).send(e);
     });
+  });
+
+  app.post('/users/login', (req, res) => {
+    let body = pick(req.body, ['email', 'password']);
+    
+    User.findByCredentials(body.email, body.password)
+      .then(user => {
+        return user.generateAuthToken().then(token => {
+          res.header('x-auth', token).send(user);
+        });
+      }).catch(e => res.status(400).send(e));
   });
 
   app.get('/users/me', authenticate, (req, res) => {
@@ -29,15 +39,7 @@ module.exports = app => {
     }, (e) => res.status(400).send(e));
   });
 
-  app.post('/users/login', (req, res) => {
-    let body = pick(req.body, ['email', 'password']);
-    User.findByCredentials(body.email, body.password)
-      .then(user => {
-        return user.generateAuthToken().then(token => {
-          res.header('x-auth', token).send(user);
-        });
-      }).catch(e => res.status(400).send(e));
-  });
+ 
 
 
 }

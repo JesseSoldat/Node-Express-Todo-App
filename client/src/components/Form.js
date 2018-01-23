@@ -4,15 +4,22 @@ import { FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap
 class Form extends Component {
     state = {
       email: '',
-      password: ''
+      password: '',
     };
 
   handleEmailChange = (e) => {
-    this.setState({ email: e.target.value });
+    let email = e.target.value;
+    // this.setState((prevState) => {
+    //   return {email}
+    // });
+    this.setState((prevState) => ({ email }));
   }
   
   handlePasswordChange = (e) => {
-    this.setState({ password: e.target.value });
+    let password = e.target.value;
+    this.setState((prevState) => {
+      return { password }
+    });
   }
 
   handleSubmit = (e) => {
@@ -26,10 +33,11 @@ class Form extends Component {
       const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       valid = re.test(this.state.email.toLowerCase());
     }
+
     if(valid === false) {
       return 'error';
     }
-    if(valid === true) {
+    if(valid === true) {  
       return 'success';
     }
 
@@ -44,11 +52,25 @@ class Form extends Component {
     return null;
   }
 
+  isValid() {
+    let valid = false;
+
+    if (this.getPasswordValidationState() === null || this.getEmailValidationState() === null) {
+      valid = false;
+    }
+    else if (this.getPasswordValidationState() === 'error' || this.getEmailValidationState() === 'error') {
+      valid = false;
+    } else {
+      valid = true;
+    }
+    return valid;
+  }
+
 
   render() {
     return (
-      <form>
-        <FormGroup
+      <form onSubmit={this.handleSubmit}>
+        <FormGroup 
           controlId="email"
           validationState={this.getEmailValidationState()}
         >
@@ -76,7 +98,11 @@ class Form extends Component {
           <FormControl.Feedback />
           <HelpBlock>Validation is based on Password length.</HelpBlock>
         </FormGroup>
-        <button className="btn btn-primary" onClick={this.handleSubmit}>Submit</button>
+        <button type="submit" 
+          disabled={!this.isValid()}
+          className="btn btn-primary">
+          Submit
+        </button>
       </form>
     );
   }
