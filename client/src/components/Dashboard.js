@@ -9,48 +9,61 @@ class Dashboard extends Component {
   }
   //----------------------------------
   //constructor()
-  componentWillMount() { }
+  //componentWillMount() { }
   //render()
-  componentDidMount() {
-    //FETCH DATA
-    let storedValues = localStorage.getItem('exampleArray');
-    if(storedValues) {
-      storedValues = storedValues.split(',');
-    }
-    
-    if(storedValues) {
-      this.setState((prevState) => {
-        return {
-          exampleArray: prevState.exampleArray.concat(storedValues)
-        }
-      });
-    }  
-  }
-
-  //----------------------------------
-  componentWillReceiveProps() { }
-  shouldComponentUpdate() {
-    return true;
-  }
-  componentWillUpdate() { }
-  //render()
-  componentDidUpdate(prevProp, prevState) {
-    //SAVE DATA
-    if (prevState.exampleArray.length !== this.state.exampleArray.length) {
+  componentDidMount() { //FETCH DATA
+    try {
+      let testArray = localStorage.getItem('testArray');
+      //console.log('testArray', testArray);
+      let parsedTestArray = JSON.parse(testArray);
+      //console.log('parsedTestArray', parsedTestArray);
       
+    } catch (error) {
+      console.log(error);      
+    }
+
+    try {
+      let storedValues = localStorage.getItem('exampleArray');
+      if (storedValues) { //not NULL
+        storedValues = storedValues.split(',');
+
+        this.setState((prevState) => {
+          return { exampleArray: prevState.exampleArray.concat(storedValues) }
+        });
+      }
+    } catch (error) {
+      console.log(error);     
+    }   
+  }
+  //----------------------------------
+  // componentWillReceiveProps() { }
+  // shouldComponentUpdate() { return true; }
+  // componentWillUpdate() { }
+  //render()
+  componentDidUpdate(prevProp, prevState) { //SAVE DATA
+    if (prevState.exampleArray.length !== this.state.exampleArray.length) { 
       JSON.stringify(localStorage.setItem('exampleArray', this.state.exampleArray));
+
+      //CORRECT WAY---------------------------------------
+      let exampleArray = JSON.stringify(this.state.exampleArray);
+      localStorage.setItem('testArray', exampleArray);     
     }
   }
-
   //----------------------------------
-  componentWillUnmount() { }
-
+  // componentWillUnmount() { }
+  //----------------------------------
   addRandomNumber = () => {
+    let num = Math.floor(Math.random() * 1000) + 1;
+    let numArray = [num];
     this.setState((prevState) => {
-      let num = Math.floor(Math.random() * 10) +1;
-      let numArray = [num];
-      return { 
-        exampleArray: numArray.concat(prevState.exampleArray)
+      return { exampleArray: numArray.concat(prevState.exampleArray)}
+    });
+  }
+
+  removeNumber(i) {
+    this.setState((prevState) => {
+      return {
+         exampleArray: prevState.exampleArray.filter((num, index )=> i !== index)
       }
     });
   }
@@ -64,19 +77,23 @@ class Dashboard extends Component {
         <li key={i}
           className="list-group-item">
           {num}
+          <button type="button" 
+            onClick={() => this.removeNumber(i)}
+            className="close ml-auto" 
+            aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </li>
       );
     })    
   }
 
   clearArray = () => {
-    localStorage.setItem('exampleArray', []);
+    localStorage.setItem('exampleArray', null);
     this.setState((prevState) => ({exampleArray: []}));
   }
 
   getUser = () => {
-    // console.log('getUser Dashboard', this.props.auth);
-    
     this.props.getUser(this.props.auth.xauth);
   }
 
@@ -100,7 +117,7 @@ class Dashboard extends Component {
         </button>
         <hr/>
         <h3>Random Numbers</h3>
-        <ul className="list-group">
+        <ul className="list-group col-md-6 col-lg-8">
           {this.displayRandomNumbers()}
         </ul>
       </div>
@@ -108,8 +125,6 @@ class Dashboard extends Component {
   }
 }
 
-function mapStateToProps({auth}) {
-  return { auth }
-}
+function mapStateToProps({auth}) { return { auth }}
 
 export default connect(mapStateToProps, actions)(Dashboard);
