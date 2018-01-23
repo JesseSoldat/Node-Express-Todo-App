@@ -11,26 +11,7 @@ import Todos from './components/Todos';
 
 
 class App extends Component {
-  //----------------------------------
-  //constructor()
-  componentWillMount() {}
-  //render()
-  componentDidMount() {
-    //FETCH DATA
-  }
-
-  //----------------------------------
-  componentWillReceiveProps() {}
-  shouldComponentUpdate() {}
-  componentWillUpdate() {}
-  //render()
-  componentDidUpdate(prevProp, prevState) {
-    //SAVE DATA
-  }
-
-  //----------------------------------
-  componentWillUnmount() {}
-
+  
   render() {
     const loginProps = { title: 'Login' }
 
@@ -57,10 +38,6 @@ class App extends Component {
     );
   }
 }
-
-// function mapStateToProps({auth}) {
-//   return { auth };
-// }
 
 function mapStateToProps(state) {
   return { state };
