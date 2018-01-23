@@ -19,8 +19,8 @@ class Register extends Component {
 
     return (
       <div>
-        <h3>Register</h3>
-        <Form onHandleSubmit={this.onHandleSubmit}/>
+        <h3>{this.props.title}</h3>
+        <Form onHandleSubmit={this.onHandleSubmit} btnText={'Submit'}/>
       </div>
     );
   }
@@ -30,6 +30,10 @@ function mapStateToProps({ auth }) {
   return {
     auth
   }
+}
+
+Register.defaultProps = {
+  title: 'Register'
 }
 
 export default connect(mapStateToProps, actions)(Register);

@@ -18,8 +18,8 @@ class Login extends Component {
     }
     return (
       <div>
-        <h3>Login</h3>
-        <Form onHandleSubmit={this.onHandleSubmit}/>
+        <h3>{this.props.data.title}</h3>
+        <Form onHandleSubmit={this.onHandleSubmit} btnText={'Submit'} />
       </div>
     );
   }
@@ -27,6 +27,10 @@ class Login extends Component {
 
 function mapStateToProps({auth}) {
   return { auth };
+}
+
+Login.defaultProps = {
+  title: 'Login'
 }
 
 export default connect(mapStateToProps, actions)(Login);

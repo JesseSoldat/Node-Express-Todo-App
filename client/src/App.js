@@ -11,16 +11,29 @@ import Todos from './components/Todos';
 
 
 class App extends Component {
-
-  componentDidMount() {  
+  //----------------------------------
+  //constructor()
+  componentWillMount() {}
+  //render()
+  componentDidMount() {
+    //FETCH DATA
   }
 
-  componentWillReceiveProps() {
-
+  //----------------------------------
+  componentWillReceiveProps() {}
+  shouldComponentUpdate() {}
+  componentWillUpdate() {}
+  //render()
+  componentDidUpdate(prevProp, prevState) {
+    //SAVE DATA
   }
+
+  //----------------------------------
+  componentWillUnmount() {}
 
   render() {
-  
+    const loginProps = { title: 'Login' }
+
     return (  
       <div className="container">
         <BrowserRouter>
@@ -30,10 +43,14 @@ class App extends Component {
             <hr/>  
             <Route exact path="/" component={Welcome} />
             <Route path="/register" component={Register} />
-            <Route path="/login" component={Login} />
             <Route path="/logout" component={Logout} />
             <Route path="/dashboard" component={Dashboard} />
             <Route path="/todos" component={Todos} />
+            
+            <Route path='/login' render={(props) => (
+              <Login {...props} data={loginProps} />
+            )} />
+
           </div>
         </BrowserRouter>     
       </div> 

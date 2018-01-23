@@ -1,11 +1,14 @@
 import React from 'react';
+import WelcomeBanner from './WelcomeBanner';
 
-const Welcome = () => {
+const Welcome = (props) => {
   return (
     <div>
-      <h4>Welcome</h4>
+     <WelcomeBanner subtitle="Get started now!" />
     </div>
   );
 }
+
+
 
 export default Welcome;

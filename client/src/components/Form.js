@@ -9,17 +9,12 @@ class Form extends Component {
 
   handleEmailChange = (e) => {
     let email = e.target.value;
-    // this.setState((prevState) => {
-    //   return {email}
-    // });
-    this.setState((prevState) => ({ email }));
+    this.setState(prevState => ({ email }));
   }
   
   handlePasswordChange = (e) => {
     let password = e.target.value;
-    this.setState((prevState) => {
-      return { password }
-    });
+    this.setState(prevState => ({ password }));
   }
 
   handleSubmit = (e) => {
@@ -54,7 +49,6 @@ class Form extends Component {
 
   isValid() {
     let valid = false;
-
     if (this.getPasswordValidationState() === null || this.getEmailValidationState() === null) {
       valid = false;
     }
@@ -101,11 +95,15 @@ class Form extends Component {
         <button type="submit" 
           disabled={!this.isValid()}
           className="btn btn-primary">
-          Submit
+          {this.props.btnText}
         </button>
       </form>
     );
   }
+}
+
+Form.defaultProps = {
+  btnText: 'Submit'
 }
 
 export default Form;
