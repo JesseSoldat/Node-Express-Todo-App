@@ -7,10 +7,6 @@ const { ObjectID } = require('mongodb');
 
 module.exports = app => {
   app.post('/todos', authenticate, (req, res) => {
-    console.log(req.body);
-    console.log(req.user);
-    
-    
     let todo = new Todo({
       text: req.body.text,
       _creator: req.user._id

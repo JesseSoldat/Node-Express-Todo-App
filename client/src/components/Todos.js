@@ -20,7 +20,15 @@ class Todos extends Component {
       return (
         <li key={todo._id}
           className="list-group-item">
-          {todo.text}
+          <div className="checkbox">
+          <label>
+            <input type="checkbox" 
+              value={todo.completed}
+              onChange={(e) => this.toggleTodoStatus(todo, e)} />
+            <span>{todo.text}</span>
+          </label>
+          </div>
+         
           <button type="button"
             onClick={() => this.removeTodo(todo._id)}
             className="close ml-auto"
@@ -34,18 +42,27 @@ class Todos extends Component {
 
   handleTodoChange = (e) => {
     let text = e.target.value;
-    this.setState(prevState => ({text}));
-    
+    this.setState(prevState => ({text}));  
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
     let todo = this.state.text;
     this.props.addTodo(todo, this.props.auth.xauth);
+    this.setState(() => ({text: ''}));
+  }
+
+  toggleTodoStatus(todo, e) {
+    console.log(todo);
+    
+    console.log(e.target.checked);
+    let completed = e.target.checked;
+    
+
+    
   }
 
   render() {
-   
     return (
       <div>
         <h4>Todos</h4>

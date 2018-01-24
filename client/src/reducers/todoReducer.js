@@ -1,4 +1,4 @@
-import { GET_TODOS, REMOVE_TODO, ADD_TODO  } from '../actions/types';
+import { GET_TODOS, REMOVE_TODO, ADD_TODO, UPDATE_TODO  } from '../actions/types';
 
 let initialState = {
   todos: []
@@ -7,22 +7,26 @@ let initialState = {
 export default function(state = initialState, action) {
   switch(action.type) {
     case GET_TODOS:
-      console.log('GET_TODOS', action.payload);
-      // newTodos = newTodos.concat(...action.payload.todos);  
-      return { todos: action.payload.todos};
+      console.log('GET_TODOS', action.payload); 
+      return { todos: action.payload.todos.reverse()};
 
     case ADD_TODO: 
       console.log('ADD_TODO', action.payload);
       let newAddTodo = state.todos.slice();
+      newAddTodo.unshift(action.payload);
+      return {todos: newAddTodo};
 
-      return state;
-      
     case REMOVE_TODO:
+      console.log('REMOVE_TODO', action.payload);    
       let newTodos = state.todos.slice();
-      newTodos.filter(todo => todo._id !== action.payload.id);
-      console.log('DELETE_TODOS', newTodos);
+      newTodos = newTodos.filter(todo => todo._id !== action.payload);
+      return {todos: newTodos};
+
+    case UPDATE_TODO: 
+      console.log('UPDATE_TODO', action.payload);
       
       return state;
+
     default:
       return state;
   }
