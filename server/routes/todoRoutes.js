@@ -7,6 +7,10 @@ const { ObjectID } = require('mongodb');
 
 module.exports = app => {
   app.post('/todos', authenticate, (req, res) => {
+    console.log(req.body);
+    console.log(req.user);
+    
+    
     let todo = new Todo({
       text: req.body.text,
       _creator: req.user._id
@@ -27,6 +31,7 @@ module.exports = app => {
 
   app.get('/todos/:id', authenticate, (req, res) => {
     const id = req.params.id;
+    console.log('GET ID', id);
     
     if(!ObjectID.isValid(id)) {
       return res.status(404).send({'msg': 'The todo id is not valid!'});
@@ -47,6 +52,8 @@ module.exports = app => {
 
   app.delete('/todos/:id', authenticate, (req, res) => {
     const id = req.params.id;
+    console.log('ID', id);
+    
     if(!ObjectID.isValid(id)) {
       return res.status(404).send({'msg': 'The todo id is not valid!'});
     }
